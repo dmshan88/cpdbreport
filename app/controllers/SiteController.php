@@ -119,7 +119,11 @@ class SiteController extends Controller
             echo "<tr>";
             for ($j=0; $j < $col ; $j++) { 
                 if (isset($map[$j][$i]) && is_numeric($map[$j][$i])) {
-                    $result = ($map[$j][$i] - $b0map[$j]) * $k1map[$j] / $k0map[$j] + $b1map[$j];
+                    if (empty($k0map[$j])) {
+                        $result = 0;
+                    } else {
+                        $result = ($map[$j][$i] - $b0map[$j]) * $k1map[$j] / $k0map[$j] + $b1map[$j];
+                    }
                     // $result = $map[$j][$i];
                     $result = round($result, 2);
                 } else {
