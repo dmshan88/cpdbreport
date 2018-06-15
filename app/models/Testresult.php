@@ -10,7 +10,10 @@ use Yii;
  * @property int $cpdborder_id
  * @property int $calibrator_id
  * @property int $item_id
+ * @property int $testid
  * @property double $result
+ * @property string $testtype
+ * @property string $selected
  *
  * @property Calibrator $calibrator
  * @property Item $item
@@ -32,10 +35,11 @@ class Testresult extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cpdborder_id', 'calibrator_id', 'item_id'], 'required'],
-            [['cpdborder_id', 'calibrator_id', 'item_id'], 'integer'],
+            [['cpdborder_id', 'calibrator_id', 'item_id', 'testid'], 'required'],
+            [['cpdborder_id', 'calibrator_id', 'item_id', 'testid'], 'integer'],
             [['result'], 'number'],
-            [['cpdborder_id', 'calibrator_id', 'item_id'], 'unique', 'targetAttribute' => ['cpdborder_id', 'calibrator_id', 'item_id']],
+            [['testtype', 'selected'], 'string'],
+            [['cpdborder_id', 'calibrator_id', 'item_id', 'testid'], 'unique', 'targetAttribute' => ['cpdborder_id', 'calibrator_id', 'item_id', 'testid']],
             [['calibrator_id'], 'exist', 'skipOnError' => true, 'targetClass' => Calibrator::className(), 'targetAttribute' => ['calibrator_id' => 'id']],
             [['item_id'], 'exist', 'skipOnError' => true, 'targetClass' => Item::className(), 'targetAttribute' => ['item_id' => 'id']],
             [['cpdborder_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cpdborder::className(), 'targetAttribute' => ['cpdborder_id' => 'id']],
@@ -51,7 +55,10 @@ class Testresult extends \yii\db\ActiveRecord
             'cpdborder_id' => 'Cpdborder ID',
             'calibrator_id' => 'Calibrator ID',
             'item_id' => 'Item ID',
+            'testid' => 'Testid',
             'result' => 'Result',
+            'testtype' => 'Testtype',
+            'selected' => 'Selected',
         ];
     }
 

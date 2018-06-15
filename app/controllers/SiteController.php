@@ -36,6 +36,7 @@ class SiteController extends Controller
     {
         $cpdborder = Cpdborder::findOne($id);
         $map = [];
+        $selectarr = [];
         $itemname = Item::find()
             ->select("name,id")
             ->indexBy('id')
@@ -51,10 +52,14 @@ class SiteController extends Controller
                 $itemidarr[$pos] = $itemid;
                 $itempos[$itemid] = $pos;
             }
-            if ($testresult->calibrator_id == 1) { //CAL2   
-                $map[$itempos[$itemid]][] = $testresult->result; 
+            if ($testresult->calibrator_id == 1) { //CAL2
+                $indexy = $itempos[$itemid];
+                $indexx = isset($map[$indexy]) ? count($map[$indexy]) : 0;   
+                $map[$indexy][$indexx] = $testresult->result;
+                $selectarr[$indexy][$indexx] = $testresult->selected;
             }
         }
+        // var_dump($selectarr);
         // $kbmap = [];
         // $kbmap0 = [];
         $k0map =[];
@@ -95,10 +100,14 @@ class SiteController extends Controller
             for ($j=0; $j < $col ; $j++) { 
                 if (isset($map[$j][$i]) && is_numeric($map[$j][$i])) {
                     $result = round($map[$j][$i],2);
+                    if ($selectarr[$j][$i] == "N") {
+                        $result = "<s>". $result ."</s>";
+                    }
                 } else {
                     $result = "/";
                 }
-               echo "<td>". $result ."</td>";
+              
+                echo "<td>". $result ."</td>";
             }
             echo "</tr>";
         }
